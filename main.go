@@ -30,12 +30,18 @@ func main() {
 			log.Fatal(err)
 		}
 		switch {
-		case config.BCK_TYPE == "export" || config.BCK_TYPE == "all":
+		case config.BCK_TYPE == "export":
 			startExportMikrotikConfig(client, config.BCK_PATH, config.IP)
-		case config.BCK_TYPE == "backup" && config.BCK_PASSWORD != "" || config.BCK_TYPE == "all":
+		case config.BCK_TYPE == "backup" && config.BCK_PASSWORD != "":
 			createMikrotikBackupPwd(client, config.BCK_PATH, config.IP, config.BCK_PASSWORD)
-		case config.BCK_TYPE == "backup" && config.BCK_PASSWORD == "" || config.BCK_TYPE == "all":
+		case config.BCK_TYPE == "backup" && config.BCK_PASSWORD == "":
 			createMikrotikBackup(client, config.BCK_PATH, config.IP)
+		case config.BCK_TYPE == "all" && config.BCK_PASSWORD == "":
+			startExportMikrotikConfig(client, config.BCK_PATH, config.IP)
+			createMikrotikBackup(client, config.BCK_PATH, config.IP)
+		case config.BCK_TYPE == "all" && config.BCK_PASSWORD != "":
+			startExportMikrotikConfig(client, config.BCK_PATH, config.IP)
+			createMikrotikBackupPwd(client, config.BCK_PATH, config.IP, config.BCK_PASSWORD)
 		}
 	} else {
 		client, err := sshConnectPwd(config.IP, config.LOGIN, config.PASSWORD, config.PORT)
@@ -43,12 +49,18 @@ func main() {
 			log.Fatal(err)
 		}
 		switch {
-		case config.BCK_TYPE == "export" || config.BCK_TYPE == "all":
+		case config.BCK_TYPE == "export":
 			startExportMikrotikConfig(client, config.BCK_PATH, config.IP)
-		case config.BCK_TYPE == "backup" && config.BCK_PASSWORD != "" || config.BCK_TYPE == "all":
+		case config.BCK_TYPE == "backup" && config.BCK_PASSWORD != "":
 			createMikrotikBackupPwd(client, config.BCK_PATH, config.IP, config.BCK_PASSWORD)
-		case config.BCK_TYPE == "backup" && config.BCK_PASSWORD == "" || config.BCK_TYPE == "all":
+		case config.BCK_TYPE == "backup" && config.BCK_PASSWORD == "":
 			createMikrotikBackup(client, config.BCK_PATH, config.IP)
+		case config.BCK_TYPE == "all" && config.BCK_PASSWORD == "":
+			startExportMikrotikConfig(client, config.BCK_PATH, config.IP)
+			createMikrotikBackup(client, config.BCK_PATH, config.IP)
+		case config.BCK_TYPE == "all" && config.BCK_PASSWORD != "":
+			startExportMikrotikConfig(client, config.BCK_PATH, config.IP)
+			createMikrotikBackupPwd(client, config.BCK_PATH, config.IP, config.BCK_PASSWORD)
 		}
 	}
 }
